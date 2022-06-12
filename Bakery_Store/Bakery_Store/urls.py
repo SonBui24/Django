@@ -1,4 +1,4 @@
-"""djangoProject URL Configuration
+"""Bakery_Store URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -13,11 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
 from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('sale_management/admin/', admin.site.urls),
-    path('sale_management/', include(('sale_management.urls', 'sale_management'), namespace='sale_management')),
+    path('bakery_management/admin/', admin.site.urls),
+    path('money_management/admin/', admin.site.urls),
 ]

@@ -1,0 +1,50 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'sale_management/style.css' %}">
+
+{% if order %}
+    <h1>Customer: {{ order.customer.name }} - {{ order.customer.phone }}</h1>
+    <h1>Employee: {{ order.employee.name }}</h1>
+    <h1>Purchase date: {{ order.purchase_at }}</h1>
+    <h1>Status: {{ order.status_str }}</h1>
+    <table style="width:100%">
+        <tr>
+            <th>Id</th>
+            <th>Price</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>SubTotal</th>
+        </tr>
+        {% for order_detail in order.orderdetail_set.all %}
+        <tr>
+            <td>{{ order_detail.id }}</td>
+            <td>{{ order_detail.price }}</td>
+            <td>{{ order_detail.product.name }}</td>
+            <td>{{ order_detail.quantity }}</td>
+            <td>{{ order_detail.subtotal }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <h1>No order are available</h1>
+{% endif %}
+
+<form class="form-group" action="{% url 'sale_management:update_status' order.id %}" method="post">
+    {% csrf_token %}
+    {% if message %}
+        <strong>{{ message }}</strong>
+    {% endif %}
+    <input type="submit" name="previous" value="<<< Previous Status" {% if order.status == 0 %} disabled {% endif %}>
+    <input type="submit" name="next" value="Next Status >>>" {% if order.status == 1 %} disabled{% endif %}>
+</form>
+
+<div class="print">
+    <input class="input-print" type="button" value="Print" onclick="window.print()">
+</div>
+
+<div class="print">
+    <form class="form-group" action="{% url 'sale_management:print_order' order.id %}" method="post">
+        {% csrf_token %}
+        <input class="input-print" type="submit" value="Print">
+    </form>
+</div>

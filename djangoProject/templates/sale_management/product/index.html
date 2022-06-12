@@ -1,0 +1,33 @@
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+td {
+    text-align: center;
+}
+</style>
+<form class="form-group" action="{% url 'sale_management:export_product' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" id="export" value="Export Product">
+</form>
+{% if products %}
+    <table style="width:100%">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td><a href="{% url 'sale_management:product_detail' product.id %}">{{ product.id }}</a></td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <h1>No product are available</h1>
+{% endif %}

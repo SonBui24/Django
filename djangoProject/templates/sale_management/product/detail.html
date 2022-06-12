@@ -1,0 +1,29 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'sale_management/style.css' %}">
+
+<form class="form-product" action="{% url 'sale_management:update_price' product.id %}" method="post">
+    {% csrf_token %}
+    {% if message %}
+        <strong>{{ message }}</strong>
+    {% endif %}
+    <div class="item-product">
+        <label>ID: </label>
+        <p class="product-detail">{{ product.id }}</p>
+    </div>
+    <div class="item-product">
+        <label>Name: </label>
+        <p class="product-detail">{{ product.name }}</p>
+    </div>
+    <div class="item-product">
+        <label for="price">Price: </label>
+        <input class="product-detail" name="price"  type="number" id="price">
+    </div>
+    <div class=item-product">
+        <label>Quantity: </label>
+        <p class="product-detail">{{ product.quantity }}</p>
+    </div>
+    <div class="update">
+        <input class="update-input" type="submit" value="Update">
+    </div>
+</form>
