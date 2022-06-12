@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'bakery_store',
         'USER': 'root',
         'PASSWORD': 'kjuhstlncp',
-        'HOST': '127.0.0.2',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
