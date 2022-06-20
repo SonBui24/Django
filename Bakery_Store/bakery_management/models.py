@@ -1,24 +1,40 @@
+from Bakery_Store.models import TrackingAbstract, NameAbstractModels
 from django.db import models
+from bakery_management.constants import HistoryType
 
 
-class Product(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200)
+class Product(TrackingAbstract, NameAbstractModels):
     price = models.BigIntegerField()
-    quantity = models.IntegerField()
-    expiry = models.DateField(null=True)
+    quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'Name: {self.name} - Quantity: {self.quantity} - Expiry: {self.expiry}'
+        return f'Name: {self.name} - Quantity: {self.quantity}'
 
 
-class History(models.Model):
-    id = models.AutoField(primary_key=True)
+class History(TrackingAbstract):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    inventory_quantity = models.IntegerField(null=False)
-    add_quantity = models.IntegerField(null=True)
     price = models.IntegerField()
-    date_of_manufacture = models.DateField(null=False)
+    type = models.IntegerField(default=HistoryType.ADD_QUANTITY, choices=HistoryType.HISTORY_CHOICES)
+    quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'Name: {self.product.name} - Inventory_quantity: {self.inventory_quantity} - Price: {self.price}'
+        return f'Name: {self.product.name} - Price: {self.price}'
+
+    @property
+    def type_str(self):
+        return HistoryType.HISTORY_CHOICES_DICT.get(self.type)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if self.type != 0 and self.product.quantity < self.quantity:
+            raise ValueError(
+                'Cannot update history because "current quantity" < "expired quantity" or "sold quantity"'
+            )
+
+        self.price = self.product.price
+
+        super(History, self).save(force_insert, force_update, using, update_fields)
+        if self.type == 0:
+            self.product.quantity += self.quantity
+        else:
+            self.product.quantity -= self.quantity
+        self.product.save()
