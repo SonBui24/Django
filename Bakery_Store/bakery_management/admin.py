@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Product, History
+from rangefilter.filters import DateRangeFilter
 
 
 class HistoryInLine(admin.TabularInline):
@@ -19,6 +20,10 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ['quantity']
     list_display = ['name', 'quantity']
     list_display_links = ['name', 'quantity']
+
+    search_fields = ['name']
+
+    list_filter = [('created_at', DateRangeFilter)]
 
     inlines = [HistoryInLine]
 

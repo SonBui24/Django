@@ -6,9 +6,12 @@ from money_management.constants import Class
 class Category(TrackingAbstract, NameAbstractModels):
     class_choices = models.IntegerField(default=0, choices=Class.CLASS_CHOICES)
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
     @property
     def class_choices_str(self):
-        return Class.CLASS_CHOICES_DICT.get(self)
+        return Class.CLASS_CHOICES_DICT.get(self.class_choices)
 
     def __str__(self):
         return f'{self.get_class_choices_display()} - {self.name}'
@@ -18,6 +21,9 @@ class Transaction(TrackingAbstract, NameAbstractModels):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     amount = models.IntegerField()
     note = models.CharField(max_length=1000)
+
+    class Meta:
+        verbose_name_plural = 'Transactions'
 
     def __str__(self):
         return f'Name: {self.name} - Amount: {self.amount}'

@@ -15,8 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from bakery_management.views import ProductViewSet, HistoryViewSet
+from money_management.views import CategoryViewSet, TransactionViewSet
+
+router = DefaultRouter()
+router.register('product-api/', ProductViewSet, basename='product-api')
+router.register('history-api/', HistoryViewSet, basename='history-api')
+router.register('category-api/', CategoryViewSet, basename='category-api')
+router.register('transaction-api/', TransactionViewSet, basename='transaction-api')
 
 urlpatterns = [
     path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
 ]
