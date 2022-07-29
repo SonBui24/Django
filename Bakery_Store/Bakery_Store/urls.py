@@ -16,18 +16,27 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from bakery_management.views import ProductViewSet, HistoryViewSet
-from money_management.views import CategoryViewSet, TransactionViewSet
+from rest_framework.authtoken.views import obtain_auth_token
+from bakery_management.views import ProductViewSet, HistoryViewSet, AddQuantityProduct, CloseProduct
+from money_management.views import CategoryViewSet, TransactionViewSet, GetAllExpenseView, DetailExpenseView
 
 router = DefaultRouter()
-router.register('product-api/', ProductViewSet, basename='product-api')
-router.register('history-api/', HistoryViewSet, basename='history-api')
-router.register('category-api/', CategoryViewSet, basename='category-api')
-router.register('transaction-api/', TransactionViewSet, basename='transaction-api')
+# router.register('list-product', ProductViewSet, basename='list-product')
+router.register('history', HistoryViewSet, basename='history')
+router.register('category', CategoryViewSet, basename='category')
+router.register('transaction', TransactionViewSet, basename='transaction')
+# router.register('amount-expense', GetAllExpenseView, basename='amount-expense')
 
 urlpatterns = [
     path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/list-product/', ProductViewSet.as_view()),
+    path('api/add-product/', AddQuantityProduct.as_view(), name="add-product"),
+    path('api/close-product/', CloseProduct.as_view(), name="add-product"),
+    path('api/amount-expense/', GetAllExpenseView.as_view(), name="amount-expense"),
+    path('api/detail-expense/', DetailExpenseView.as_view(), name="detail-expense"),
+    path('login/', obtain_auth_token, name='login'),
+    path('api-token-auth/', obtain_auth_token, name='api-token-auth'),
 ]

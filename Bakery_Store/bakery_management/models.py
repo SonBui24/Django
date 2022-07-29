@@ -20,6 +20,7 @@ class History(TrackingAbstract):
     price = models.IntegerField()
     type = models.IntegerField(default=HistoryType.ADD_QUANTITY, choices=HistoryType.HISTORY_CHOICES)
     quantity = models.IntegerField(default=0)
+    sold = models.IntegerField(null=True)
 
     class Meta:
         verbose_name_plural = 'Histories'
@@ -37,6 +38,9 @@ class History(TrackingAbstract):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
 
         self.price = self.product.price
+        current_quantity = self.product.quantity
+        if self.type == HistoryType.INVENTORY_QUANTITY:
+            self.sold = current_quantity - self.quantity
 
         super(History, self).save(force_insert, force_update, using, update_fields)
         if self.type == HistoryType.ADD_QUANTITY:

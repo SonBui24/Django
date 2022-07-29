@@ -38,7 +38,8 @@ class TrackingAbstract(CreatedAbstractModel, ModifiedAbstractModel):
 
 
 class NameAbstractModels(models.Model):
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=100)
 
     class Meta:
         abstract = True
+

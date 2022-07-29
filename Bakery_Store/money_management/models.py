@@ -1,20 +1,15 @@
 from django.db import models
 from Bakery_Store.models import TrackingAbstract, NameAbstractModels
-from money_management.constants import Class
 
 
-class Category(TrackingAbstract, NameAbstractModels):
-    class_choices = models.IntegerField(default=0, choices=Class.CLASS_CHOICES)
+class Category(TrackingAbstract):
+    name = models.CharField(max_length=20)
 
     class Meta:
         verbose_name_plural = 'Categories'
 
-    @property
-    def class_choices_str(self):
-        return Class.CLASS_CHOICES_DICT.get(self.class_choices)
-
     def __str__(self):
-        return f'{self.get_class_choices_display()} - {self.name}'
+        return self.name
 
 
 class Transaction(TrackingAbstract, NameAbstractModels):
@@ -29,6 +24,6 @@ class Transaction(TrackingAbstract, NameAbstractModels):
         return f'Name: {self.name} - Amount: {self.amount}'
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        if self.category.class_choices == 0:
+        if self.category.name == 'Expense':
             self.amount = -self.amount
         super(Transaction, self).save(force_insert, force_update, using, update_fields)

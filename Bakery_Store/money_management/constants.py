@@ -1,10 +1,10 @@
-class Class:
+class CategoryChoices:
     EXPENSE = 0
     REVENUE = 1
 
-    CLASS_CHOICES = (
+    CATEGORY_CHOICES = (
         (EXPENSE, 'Expense'),
         (REVENUE, 'Revenue'),
     )
 
-    CLASS_CHOICES_DICT = dict(CLASS_CHOICES)
+    CATEGORY_CHOICES_DICT = dict(CATEGORY_CHOICES)

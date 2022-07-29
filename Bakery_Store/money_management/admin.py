@@ -12,11 +12,11 @@ class CategoryInline(admin.TabularInline):
 class CategoryAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Categories', {
-            'fields': ['class_choices', 'name']
+            'fields': ['name']
         })
     ]
 
-    list_display = ['class_choices', 'name']
+    list_display = ['name']
     list_display_links = ['name']
 
 

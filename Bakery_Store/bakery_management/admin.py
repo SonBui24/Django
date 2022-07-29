@@ -6,8 +6,8 @@ from rangefilter.filters import DateRangeFilter
 class HistoryInLine(admin.TabularInline):
     model = History
     extra = 1
-    fields = ['type', 'quantity', 'price', 'created_at']
-    readonly_fields = ['created_at', 'price']
+    fields = ['type', 'quantity', 'price', 'sold', 'created_at']
+    readonly_fields = ['created_at', 'price', 'sold']
     ordering = ['-created_at']
 
 
@@ -31,11 +31,11 @@ class ProductAdmin(admin.ModelAdmin):
 class HistoryAdmin(admin.ModelAdmin):
     fieldsets = [
         ('History', {
-            'fields': ['product', 'type', 'quantity', 'price']
+            'fields': ['product', 'type', 'quantity', 'price', 'sold']
         })
     ]
 
-    list_display = ['product', 'price', 'created_at']
+    list_display = ['product', 'price', 'sold', 'created_at']
     list_display_links = ['product']
 
 
